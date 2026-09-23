@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+.venv/
+
+# Django
+*.log
+db.sqlite3
+
+# Environment secrets — never bake these into the image
+.env
+
+# Git history
+.git/
+.gitignore
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

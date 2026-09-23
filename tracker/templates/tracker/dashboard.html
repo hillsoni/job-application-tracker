@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard — Job Application Tracker</title>
+</head>
+<body>
+    <h1>Welcome, {{ request.user.username }}</h1>
+    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">Log out</button>
+    </form>
+    <p><a href="{% url 'application-create' %}">+ Add application</a></p>
+
+    <h2>Summary (Click to filter)</h2>
+    <ul>
+        <li><a href="{% url 'dashboard' %}">Total: {{ stats.total }}</a></li>
+        {% for status, count in stats.items %}
+            {% if status != "total" %}
+                <li><a href="{% url 'dashboard' %}?status={{ status }}">{{ status }}: {{ count }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    <h2>Applications {% if request.GET.status %}(Filtered by {{ request.GET.status }}){% endif %}</h2>
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Applied Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications %}
+            <tr>
+                <td>{{ app.company_name }}</td>
+                <td>{{ app.role }}</td>
+                <td>{{ app.status }}</td>
+                <td>{{ app.applied_date }}</td>
+                <td><a href="{% url 'application-edit' app.pk %}">Edit</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No applications yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
